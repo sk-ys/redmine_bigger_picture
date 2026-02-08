@@ -178,46 +178,41 @@
         const href = el.href || el.src;
         const position = attachmentIds.indexOf(parseAttachmentIdFromUrl(href));
 
-        if (typeof biggerPicture.open === "function") {
-          biggerPicture.open({
-            items: items,
-            position: position,
-            onOpen: (container) => {
-              currentBiggerPicture = container;
-              container.appendChild(thumbPanel);
+        biggerPicture.open({
+          items: items,
+          position: position,
+          onOpen: (container) => {
+            currentBiggerPicture = container;
+            container.appendChild(thumbPanel);
 
-              // Set initial active thumbnail
-              const allButtons = thumbPanel.querySelectorAll(".bp-thumb-btn");
-              allButtons.forEach((btn, idx) => {
-                btn.classList.toggle("active", idx === position);
-              });
-            },
-            onUpdate: (container, activeItem) => {
-              const allButtons = thumbPanel.querySelectorAll(".bp-thumb-btn");
-              allButtons.forEach((btn, idx) => {
-                btn.classList.toggle("active", idx === activeItem.i);
-              });
+            // Set initial active thumbnail
+            const allButtons = thumbPanel.querySelectorAll(".bp-thumb-btn");
+            allButtons.forEach((btn, idx) => {
+              btn.classList.toggle("active", idx === position);
+            });
+          },
+          onUpdate: (container, activeItem) => {
+            const allButtons = thumbPanel.querySelectorAll(".bp-thumb-btn");
+            allButtons.forEach((btn, idx) => {
+              btn.classList.toggle("active", idx === activeItem.i);
+            });
 
-              // Scroll the active thumbnail into view
-              if (allButtons[activeItem.i]) {
-                const activeBtn = allButtons[activeItem.i];
-                const outer = thumbPanel.querySelector(".bp-thumbs-outer");
-                const { left, right, width } =
-                  activeBtn.getBoundingClientRect();
-                const { left: outerLeft, right: outerRight } =
-                  outer.getBoundingClientRect();
+            // Scroll the active thumbnail into view
+            if (allButtons[activeItem.i]) {
+              const activeBtn = allButtons[activeItem.i];
+              const outer = thumbPanel.querySelector(".bp-thumbs-outer");
+              const { left, right, width } = activeBtn.getBoundingClientRect();
+              const { left: outerLeft, right: outerRight } =
+                outer.getBoundingClientRect();
 
-                if (right > outerRight) {
-                  outer.scrollLeft += right - outerRight + 4;
-                } else if (left < outerLeft) {
-                  outer.scrollLeft -= outerLeft - left + 4;
-                }
+              if (right > outerRight) {
+                outer.scrollLeft += right - outerRight + 4;
+              } else if (left < outerLeft) {
+                outer.scrollLeft -= outerLeft - left + 4;
               }
-            },
-          });
-        } else {
-          console.warn("BiggerPicture.open is not a function");
-        }
+            }
+          },
+        });
       });
     });
   }
