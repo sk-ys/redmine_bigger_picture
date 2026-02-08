@@ -1,6 +1,10 @@
 /* Redmine Bigger Picture Styles */
 
 /* Bigger Picture lightbox customization */
+.bp-wrap {
+  z-index: 10000;
+}
+
 .bp-iframe {
   width: 100% !important;
   margin-top: 50px;
